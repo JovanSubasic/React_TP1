@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View , FlatList , TextInput , TouchableHighlight ,Alert ,KeyboardAvoidingView ,Keyboard , ImageBackground} from 'react-native';
+import { StyleSheet, Text, View , FlatList , TextInput , TouchableHighlight ,Alert ,KeyboardAvoidingView ,Keyboard , ImageBackground , Modal , Button} from 'react-native';
 import React , {useState} from 'react';
 
 
@@ -9,6 +9,12 @@ export default function App() {
   
   const [name, setName] = useState('');
   const [list, setList] = useState(sampleGoals);
+
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+  const containerStyle = {backgroundColor: 'white', padding: 20};
 
   // function handleChange(event) {
   //   setName(event.target.value);
@@ -67,6 +73,12 @@ export default function App() {
           data={list}
           renderItem={({item}) => <Text style={styles.item}>{"\n"}- {item.key}
           
+          <TouchableHighlight onPress={showModal}>
+            <View style={styles.buttonModif}>
+              <Text>Modifier</Text>
+            </View>
+          </TouchableHighlight>
+
           <TouchableHighlight onPress={() => suppListe(item.key)}>
             <View style={styles.buttonSupp}>
               <Text>Supprimer</Text>
@@ -74,7 +86,16 @@ export default function App() {
           </TouchableHighlight></Text>}
         />
         
-        
+        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+          <Text>{"\n"}{"\n"}{"\n"}{"\n"}Example Modal.  Click outside this area to dismiss.</Text>
+
+          <Button onPress={hideModal} title="Return"></Button>
+        </Modal>
+
+        {/* <Button onPress={showModal} title="Show Modal">
+          
+        </Button> */}
+
         <TextInput  id='inputAddListe' style={styles.input} onChangeText={(value) => setName(value)}  placeholder="Ajouter dans la liste"/>
 
         <KeyboardAvoidingView onPress={Keyboard.dismiss} behavior="padding">
@@ -116,6 +137,19 @@ const styles = StyleSheet.create({
   buttonSupp: {
     color: '#fff',
     backgroundColor: '#dc3545',
+    borderColor: '#dc3545',
+    textAlign: 'center',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    padding: 5,
+    left:     5,
+    top:      7,
+  },
+  buttonModif: {
+    color: '#fff',
+    backgroundColor: '#ffc107',
     borderColor: '#dc3545',
     textAlign: 'center',
     borderTopLeftRadius: 20,
